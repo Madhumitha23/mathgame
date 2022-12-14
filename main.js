@@ -23,6 +23,8 @@ function getProblem(){
     }
 }
 
+
+
 function getNewProblem(){
     userField.value=""
         userField.focus()
