@@ -54,15 +54,24 @@ body{
   }
   
   .progress-boxes{
-    display: flex;   
+    
+    display: flex;  
+    
+    
   }  
   .progress-box {
     height: 40px;
     border: 1px solid #c7c7c7;
     flex:1;
+    color: white;
+    justify-content: center;
+    display: flex;   
+    line-height: 40px;
   }
   .progress{
     position: relative;
+    margin:auto;
+    width: 50%;
   }
   .progress_inner {
      position: absolute;
@@ -118,3 +127,4 @@ body{
     font-size: 5rem;    
     z-index: 2;
   }
+ 

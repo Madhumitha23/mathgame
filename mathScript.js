@@ -55,11 +55,19 @@ function validateAnswer()
     {
         if(this.innerText == `${easyQuestions[randomNumber].answer}`)
         { 
-            displayAnswerStatus('correct');    
-            correctAnswers++;  
-            numberOfCorrectAnswers.innerHTML = correctAnswers; 
-            renderProgressBar();
-            getNewQuestion();
+            if(questionNumber==20)
+            {
+                displayAnswerStatus('gameover');  
+                resetGame();
+            }
+            else
+            {
+                displayAnswerStatus('correct');    
+                correctAnswers++;  
+                numberOfCorrectAnswers.innerHTML = correctAnswers; 
+                renderProgressBar();
+                getNewQuestion();
+            }
         }
         else
         {
@@ -67,10 +75,7 @@ function validateAnswer()
             //alert('Incorrect answer');
         }
     }
-    else
-    {
-        gameOver();
-    }
+    
     
 }
 function renderProgressBar(){
@@ -91,19 +96,25 @@ function displayAnswerStatus(status){
         document.querySelector(".message").textContent = "Well Done!";
         document.querySelector(".message").style.color = 'green';
     }
-    else
+    else if(status=='wrong')
     {
         document.querySelector(".answerStatus").textContent = "\u274c"
         document.querySelector(".answerStatus").style.color = 'red';
         document.querySelector(".message").textContent = "Please try again!";
         document.querySelector(".message").style.color = 'red';
     }
+    else{
+        document.querySelector(".answerStatus").textContent = "\u270C";
+        document.querySelector(".answerStatus").style.color = 'green';
+        document.querySelector(".message").textContent = "Good Job!";
+        
+    }
     document.body.classList.add("overlay-is-open")
      setTimeout(()=>document.body.classList.remove("overlay-is-open"),1000)   
         
 }
 function gameOver(){
-    document.querySelector(".gameOver").textContent = "\u2713";
+    document.querySelector(".answerStatus").textContent = "\u2713";
     document.querySelector(".gameOver").style.color = 'green';
 }
 
