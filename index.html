@@ -7,16 +7,25 @@
         <div class="maths">
             Add two numbers
         </div>
-        <p class="question"></p>
-        <div class="choices">
+        
+        <form action="" class="userForm">
+            <div class="questionDiv">
+                <p class="question"></p>
+                <input type="text" class="userField" autocomplete="off" maxlength="9">
+            </div>
+        <div class="verifyAns">
+            <button class="checkAnswer">Answer</button>
+        </div>
+    </form>
+        <!-- <div class="choices">
             <div class="boxes">
                 <div id="choice1" class="box" (click)="ValidateAnswer()"></div>
                 <div id="choice2" class="box"></div>
                 <div id="choice3" class="box"></div> 
                 <div id="choice4" class="box"></div>                
             </div>            
-        </div>    
-        <p class="status">You have answered <span class="correctAnswers">0</span> out of 20 questions corretly.</p>  
+        </div>     -->
+        <p class="status">You have answered <span class="correctAnswers">0</span> out of 20 questions correctly.</p>  
         <div class="progress">
             <div class="progress-boxes">
                 <div class="progress-box">1</div>
@@ -43,9 +52,9 @@
             <div class="progress_inner">
             </div>
         </div>
-        <div class="reset">
+        <!-- <div class="reset">
             <button class="reset-button">Start Over</button>  
-        </div>  
+        </div>   -->
         <div class="overlay">
            <div class="overlay-inner">
             <p class="answerStatus"></p>
