@@ -1,17 +1,10 @@
+let currentLevel = document.querySelector(".currentLevel").textContent;
 const questionField = document.querySelector(".question");
 const userAnswer = document.querySelector(".userField");
 const userForm = document.querySelector(".userForm");
-// const choice1 = document.getElementById("choice1");
-// const choice2 = document.getElementById("choice2");
-// const choice3 = document.getElementById("choice3");
-// const choice4 = document.getElementById("choice4");
 const numberOfCorrectAnswers = document.querySelector(".correctAnswers");
 const progressbar = document.querySelector(".progress_inner")
  const checkAnswer = document.querySelector(".checkAnswer")
-// choice1.addEventListener("click",validateAnswer);
-// choice2.addEventListener("click",validateAnswer);
-// choice3.addEventListener("click",validateAnswer);
-// choice4.addEventListener("click",validateAnswer);
 checkAnswer.addEventListener("click",validateAnswer);
 userForm.addEventListener("submit",validateAnswer);
 const easyQuestions =[
@@ -38,56 +31,101 @@ const easyQuestions =[
 ];
 let questionNumber = 0;
 let correctAnswers =0;
-let randomNumber;
+let questionForLevel1={
+    firstNumber:0,
+    secondNumber:0,
+    thirdnumber:0,
+    fourthNumber:0
+}
+let questionHavingTwoNumbers={
+    firstNumber:0,
+    secondNumber:0
+}
+
 getNewQuestion();
 
 function getNewQuestion()
-{
+{   
     userAnswer.value=""
-    userAnswer.focus();
-    questionNumber++;    
-    randomNumber = Math.floor(Math.random()*20);
-    questionField.innerHTML = `${easyQuestions[randomNumber].question}`   
-    // choice1.innerText = `${easyQuestions[randomNumber].choices[0]}` 
-    // choice2.innerText = `${easyQuestions[randomNumber].choices[1]}` 
-    // choice3.innerText = `${easyQuestions[randomNumber].choices[2]}` 
-    // choice4.innerText = `${easyQuestions[randomNumber].choices[3]}` 
+    userAnswer.focus();    
+    if(currentLevel == '1')
+    {
+        document.querySelector(".pageHeader").textContent="Add more than two numbers";
+        questionForLevel1.firstNumber = getRandomNumbers(1,10);
+        questionForLevel1.secondNumber = getRandomNumbers(1,10);
+        questionForLevel1.thirdnumber = getRandomNumbers(1,10);
+        questionForLevel1.fourthNumber = getRandomNumbers(1,10);
+        questionField.innerHTML = `${questionForLevel1.firstNumber} + ${questionForLevel1.secondNumber} + ${questionForLevel1.thirdnumber} + ${questionForLevel1.fourthNumber} = `;
+    }  
+    else if(currentLevel == '2')  
+    {
+        document.querySelector(".pageHeader").textContent="Adding 2-digit numbers and ones";
+        document.querySelector(".currentLevel").textContent = currentLevel;
+        questionHavingTwoNumbers.firstNumber = getRandomNumbers(10,100);
+        questionHavingTwoNumbers.secondNumber = getRandomNumbers(1,10);
+        questionField.innerHTML = `${questionHavingTwoNumbers.firstNumber} + ${questionHavingTwoNumbers.secondNumber} = `;
+    }
+    else if(currentLevel == '3') {
+        document.querySelector(".pageHeader").textContent="Adding 2-digit numbers and tens";
+        questionHavingTwoNumbers.firstNumber = getRandomNumbers(10,100);
+        document.querySelector(".currentLevel").textContent = currentLevel;
+    }
+    else if(currentLevel == '4') {
+
+    }
+    else{
+
+    }
+    questionNumber++;        
+}
+
+function getRandomNumbers(min,max)
+{
+    min = Math.ceil(min);
+    max = Math.floor(max);    
+    return Math.floor(Math.random() * (max - min) + min); 
 }
 
 function validateAnswer(e)
 {   
     e.preventDefault();
-    if(questionNumber <= 20)
+    if(currentLevel == 1)
     {
-        console.log(userAnswer.value)
-        if(userAnswer.value == `${easyQuestions[randomNumber].answer}`)
-        { 
-            if(questionNumber==20)
-            {
-                displayAnswerStatus('gameover');  
-                resetGame();
+        if(userAnswer.value == questionForLevel1.firstNumber + questionForLevel1.secondNumber + questionForLevel1.thirdnumber + questionForLevel1.fourthNumber)
+        {
+            correctAnswers++; 
+            renderProgressBar();
+            if(questionNumber==10)
+            {                
+                displayAnswerStatus('goToNextLevel'); 
             }
             else
             {
-                displayAnswerStatus('correct');    
-                correctAnswers++;  
-                numberOfCorrectAnswers.innerHTML = correctAnswers; 
-                renderProgressBar();
-                getNewQuestion();
+                displayAnswerStatus('correct');               
+                numberOfCorrectAnswers.innerHTML = correctAnswers;            
+                
             }
-        }
+            getNewQuestion();            
+        }   
         else
         {
-            displayAnswerStatus('wrong');    
-            //alert('Incorrect answer');
-        }
+            displayAnswerStatus('wrong'); 
+        }     
+    } 
+    else if(currentLevel == 2)   
+    {
+        displayAnswerStatus("tbd")
+
     }
-    
-    
+    else{
+
+    }
 }
+
 function renderProgressBar(){
-    progressbar.style.transform = `scaleX(${correctAnswers / 20})`
+    progressbar.style.transform = `scaleX(${correctAnswers / 10})`
 }
+
 function resetGame(){  
     questionNumber = 0;  
     getNewQuestion()
@@ -96,33 +134,42 @@ function resetGame(){
     renderProgressBar()    
 }
 function displayAnswerStatus(status){
-    console.log(status)
+    
     if(status === 'correct')
     {
         document.querySelector(".answerStatus").textContent = "\u2713";
         document.querySelector(".answerStatus").style.color = 'green';
-        document.querySelector(".message").textContent = "Well Done!";
+        document.querySelector(".message").textContent = "Well Done Nishi!";
         document.querySelector(".message").style.color = 'green';
     }
     else if(status=='wrong')
     {
         document.querySelector(".answerStatus").textContent = "\u274c"
         document.querySelector(".answerStatus").style.color = 'red';
-        document.querySelector(".message").textContent = "Please try again!";
+        document.querySelector(".message").textContent = "Nishitha, Please try again!";
         document.querySelector(".message").style.color = 'red';
+    }
+    else if(status=='tbd')
+    {
+        document.querySelector(".answerStatus").textContent = "\u2713";
+        document.querySelector(".answerStatus").style.color = 'green';
+        document.querySelector(".message").textContent = "Under construction. Please wait";
+        document.querySelector(".message").style.color = 'green';
     }
     else{
         document.querySelector(".answerStatus").textContent = "\u270C";
         document.querySelector(".answerStatus").style.color = 'green';
-        document.querySelector(".message").textContent = "Good Job!";
-        
+        document.querySelector(".message").textContent = "Good Job kutty paapa!!!"; 
+        gotToNextLevel();      
     }
     document.body.classList.add("overlay-is-open")
      setTimeout(()=>document.body.classList.remove("overlay-is-open"),1000)   
         
 }
-function gameOver(){
-    document.querySelector(".answerStatus").textContent = "\u2713";
-    document.querySelector(".gameOver").style.color = 'green';
+
+
+function gotToNextLevel(){
+    currentLevel++;
+    resetGame();
 }
 
