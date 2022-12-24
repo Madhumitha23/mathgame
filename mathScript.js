@@ -41,7 +41,7 @@ let questionHavingTwoNumbers={
     firstNumber:0,
     secondNumber:0
 }
-
+const tens =[10,20,30,40,50,60,70,80,90,100];
 getNewQuestion();
 
 function getNewQuestion()
@@ -53,21 +53,41 @@ function getNewQuestion()
         document.querySelector(".pageHeader").textContent="Add more than two numbers";
         questionForLevel1.firstNumber = getRandomNumbers(1,10);
         questionForLevel1.secondNumber = getRandomNumbers(1,10);
-        questionForLevel1.thirdnumber = getRandomNumbers(1,10);
-        questionForLevel1.fourthNumber = getRandomNumbers(1,10);
+        questionForLevel1.thirdnumber = getRandomNumbers(1,5);
+        questionForLevel1.fourthNumber = getRandomNumbers(1,5);
         questionField.innerHTML = `${questionForLevel1.firstNumber} + ${questionForLevel1.secondNumber} + ${questionForLevel1.thirdnumber} + ${questionForLevel1.fourthNumber} = `;
-    }  
+    } 
     else if(currentLevel == '2')  
-    {
-        document.querySelector(".pageHeader").textContent="Adding 2-digit numbers and ones";
-        document.querySelector(".currentLevel").textContent = currentLevel;
+    {        
         questionHavingTwoNumbers.firstNumber = getRandomNumbers(10,100);
         questionHavingTwoNumbers.secondNumber = getRandomNumbers(1,10);
         questionField.innerHTML = `${questionHavingTwoNumbers.firstNumber} + ${questionHavingTwoNumbers.secondNumber} = `;
-    }
-    else if(currentLevel == '3') {
-        document.querySelector(".pageHeader").textContent="Adding 2-digit numbers and tens";
+    } 
+    else if(currentLevel == '3')  
+    {        
         questionHavingTwoNumbers.firstNumber = getRandomNumbers(10,100);
+        questionHavingTwoNumbers.secondNumber = tens[getRandomNumbers(1,10)];
+        questionField.innerHTML = `${questionHavingTwoNumbers.firstNumber} + ${questionHavingTwoNumbers.secondNumber} = `;
+    }
+    else if(currentLevel == '4') {
+       let firstnumber = getRandomNumbers(10,100);
+       let secondnumber=getRandomNumbers(10,100);
+       
+       console.log(firstnumber)
+       
+       console.log(secondnumber)
+       questionHavingTwoNumbers.firstNumber =firstnumber; 
+       if(((firstnumber%10)+(secondnumber%10))<9)
+       {
+               
+        questionHavingTwoNumbers.secondNumber = secondnumber;
+       }
+       else{
+        let numberToBeDeducted = 9-(firstnumber%10);
+        
+        questionHavingTwoNumbers.secondNumber = secondnumber-(secondnumber%10)+numberToBeDeducted;
+       }
+        questionField.innerHTML = `${questionHavingTwoNumbers.firstNumber} + ${questionHavingTwoNumbers.secondNumber} = `;
         document.querySelector(".currentLevel").textContent = currentLevel;
     }
     else if(currentLevel == '4') {
@@ -112,9 +132,28 @@ function validateAnswer(e)
             displayAnswerStatus('wrong'); 
         }     
     } 
-    else if(currentLevel == 2)   
-    {
-        displayAnswerStatus("tbd")
+    else if(currentLevel == 2 || currentLevel == 3 || currentLevel==4)   
+    {        
+        if(userAnswer.value == questionHavingTwoNumbers.firstNumber + questionHavingTwoNumbers.secondNumber)
+        {
+            correctAnswers++; 
+            renderProgressBar();
+            if(questionNumber==10)
+            {                
+                displayAnswerStatus('goToNextLevel'); 
+            }
+            else
+            {
+                displayAnswerStatus('correct');               
+                numberOfCorrectAnswers.innerHTML = correctAnswers;            
+                
+            }
+            getNewQuestion();
+        }
+        else{
+            displayAnswerStatus('wrong'); 
+        }
+        //displayAnswerStatus("tbd")
 
     }
     else{
@@ -141,6 +180,8 @@ function displayAnswerStatus(status){
         document.querySelector(".answerStatus").style.color = 'green';
         document.querySelector(".message").textContent = "Well Done Nishi!";
         document.querySelector(".message").style.color = 'green';
+        document.body.classList.add("overlay-is-open")
+     setTimeout(()=>document.body.classList.remove("overlay-is-open"),1000)   
     }
     else if(status=='wrong')
     {
@@ -148,6 +189,8 @@ function displayAnswerStatus(status){
         document.querySelector(".answerStatus").style.color = 'red';
         document.querySelector(".message").textContent = "Nishitha, Please try again!";
         document.querySelector(".message").style.color = 'red';
+        document.body.classList.add("overlay-is-open")
+     setTimeout(()=>document.body.classList.remove("overlay-is-open"),1000)   
     }
     else if(status=='tbd')
     {
@@ -155,21 +198,49 @@ function displayAnswerStatus(status){
         document.querySelector(".answerStatus").style.color = 'green';
         document.querySelector(".message").textContent = "Under construction. Please wait";
         document.querySelector(".message").style.color = 'green';
+        document.body.classList.add("overlay-is-open")
+     setTimeout(()=>document.body.classList.remove("overlay-is-open"),1000)   
     }
     else{
         document.querySelector(".answerStatus").textContent = "\u270C";
         document.querySelector(".answerStatus").style.color = 'green';
-        document.querySelector(".message").textContent = "Good Job kutty paapa!!!"; 
+        document.querySelector(".message").textContent = "Good Job Nishu!!!"; 
+        document.body.classList.add("overlay-is-open")
+     setTimeout(()=>document.body.classList.remove("overlay-is-open"),3000)   
         gotToNextLevel();      
     }
-    document.body.classList.add("overlay-is-open")
-     setTimeout(()=>document.body.classList.remove("overlay-is-open"),1000)   
+    
         
 }
 
 
 function gotToNextLevel(){
     currentLevel++;
+    switch(currentLevel)
+    {
+        case 2:
+        {
+            document.querySelector(".pageHeader").textContent="Adding 2-digit numbers and ones";
+            document.querySelector(".currentLevel").textContent = currentLevel;
+            break;
+        }
+        case 3:
+        {
+            document.querySelector(".pageHeader").textContent="Adding 2-digit numbers and tens";
+            document.querySelector(".currentLevel").textContent = currentLevel;
+            break;
+        }
+        case 4:
+        {
+            document.querySelector(".pageHeader").textContent="Adding 2-digit numbers";
+            document.querySelector(".currentLevel").textContent = currentLevel;
+            break;
+        }
+        default:
+        {
+            break;
+        }
+    }
     resetGame();
 }
 
